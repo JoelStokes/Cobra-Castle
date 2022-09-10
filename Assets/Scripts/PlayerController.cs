@@ -24,9 +24,6 @@ public class PlayerController : MonoBehaviour
     private List<SpriteRenderer> BodyRenderers = new List<SpriteRenderer>();    //All body part SpriteRenderers to change sprites based on move directions
     private List<Vector2> previousMoves = new List<Vector2>();  //List of previous moves to apply to body parts
 
-    private float moveLimit;    //Modifier for how quickly the countdown is to the next move
-    private float moveCounter;
-
     //Score Variables
     private int miceEaten;
     private int goldMiceEaten;
@@ -41,8 +38,20 @@ public class PlayerController : MonoBehaviour
         Left = 90
     }
 
+    //Movement Timers & Buffers
+    private float moveTimer = 0;
+    private float moveLimit = .2f;
+    private bool sprinting = false;
+    private Vector2 movingDirection;
+    private Vector2 nextMove;
+    private Vector2 moveBuffer;
+    private Vector2 empty;  //Since Vectors can't be null, set to this for empty checks
+
     void Start()
     {
+        empty = new Vector2(50,50);
+        moveBuffer = empty;
+
         for (int i=0; i<bodyLength; i++){   //Create initial body
             GameObject BodySegment = GameObject.Instantiate(BodyPrefab, transform.position, Quaternion.identity);
             BodyRenderers.Add(BodySegment.GetComponent<SpriteRenderer>());
@@ -63,14 +72,39 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow)){
-            CheckMoveLocation(1, 0);
-        } else if (Input.GetKeyDown(KeyCode.LeftArrow)){
-            CheckMoveLocation(-1,0);
-        } else if (Input.GetKeyDown(KeyCode.UpArrow)){
-            CheckMoveLocation(0,1);
-        } else if (Input.GetKeyDown(KeyCode.DownArrow)){
-            CheckMoveLocation(0,-1);
+        Vector2 newInput = empty;
+        if (Input.GetKeyDown(KeyCode.RightArrow) && transform.rotation.eulerAngles.z != (float)Direction.Left){
+            newInput = new Vector2(1, 0);
+        } else if (Input.GetKeyDown(KeyCode.LeftArrow) && transform.rotation.eulerAngles.z != (float)Direction.Right){
+            newInput = new Vector2(-1,0);
+        } else if (Input.GetKeyDown(KeyCode.UpArrow) && transform.rotation.eulerAngles.z != (float)Direction.Down){
+            newInput = new Vector2(0,1);
+        } else if (Input.GetKeyDown(KeyCode.DownArrow) && transform.rotation.eulerAngles.z != (float)Direction.Up){
+            newInput = new Vector2(0,-1);
+        }
+
+        if (nextMove == empty && newInput  != empty){ //Help prevent eaten moves in fast-paced game, make extra moves go into input buffer to come out next move cycle
+            nextMove = newInput;
+        } else if (newInput != empty) {
+            moveBuffer = newInput;
+        }
+
+        if (Input.GetKey(KeyCode.Space)){
+            sprinting = true;
+        } else {
+            sprinting = false;
+        }
+    }
+
+    void FixedUpdate() {
+        moveTimer += Time.deltaTime;
+
+        if (moveTimer > moveLimit || (moveTimer > moveLimit/2 && sprinting)){
+            if (nextMove != empty){
+                CheckMoveLocation(nextMove);
+            } else {
+                CheckMoveLocation(movingDirection);
+            }
         }
     }
 
@@ -84,11 +118,19 @@ public class PlayerController : MonoBehaviour
             Body[i].transform.eulerAngles = new Vector3(0, 0, (float)Direction.Right);
             previousMoves.Add(new Vector2(SpawnLocation.x + ((i*-1)-1), SpawnLocation.y));
         }
+
+        nextMove = new Vector2(1, 0);   //Reset move direction right to prevent crashing at spawn
     }
 
-    private void CheckMoveLocation(int newX, int newY){
-        Vector2 newMove = new Vector2(newX,newY);
+    private void CheckMoveLocation(Vector2 newMove){
+        moveTimer = 0;
         RaycastHit2D hit = Physics2D.Raycast(transform.position, newMove, 1);
+        movingDirection = newMove;
+        nextMove = empty;
+        if (moveBuffer != empty){
+            nextMove = moveBuffer;
+            moveBuffer = empty;
+        }
 
         if (hit.collider == null || hit.transform.tag == "Tail"){  //Empty Space free to move / Can never crash into Tail since it will change next spot
             PerformMove(newMove);
