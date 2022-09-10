@@ -17,12 +17,12 @@ public class PlayerController : MonoBehaviour
     public Sprite bodyDownRightImg;
     public Sprite bodyDownLeftImg;
 
-
     private int lives = 3;
     private int bodyLength = 4;
     private List<GameObject> Body = new List<GameObject>(); //All connected body parts
     private List<SpriteRenderer> BodyRenderers = new List<SpriteRenderer>();    //All body part SpriteRenderers to change sprites based on move directions
     private List<Vector2> previousMoves = new List<Vector2>();  //List of previous moves to apply to body parts
+    private MouseManager mouseManager;
 
     //Score Variables
     private int miceEaten;
@@ -41,14 +41,22 @@ public class PlayerController : MonoBehaviour
     //Movement Timers & Buffers
     private float moveTimer = 0;
     private float moveLimit = .2f;
+    private float goldenMouseTimer = 0;
+    private float goldenMouseLimit;
     private bool sprinting = false;
     private Vector2 movingDirection;
     private Vector2 nextMove;
     private Vector2 moveBuffer;
     private Vector2 empty;  //Since Vectors can't be null, set to this for empty checks
+    private int layerMask;
 
     void Start()
     {
+        layerMask =~ LayerMask.GetMask("Head");  //Prevent Move from detecting self. Needed head box to prevent mouse spawns in face
+
+        mouseManager = GameObject.Find("MouseManager").GetComponent<MouseManager>();
+        goldenMouseLimit = moveLimit * 2;
+
         empty = new Vector2(50,50);
         moveBuffer = empty;
 
@@ -98,6 +106,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate() {
         moveTimer += Time.deltaTime;
+        goldenMouseTimer += Time.deltaTime;
 
         if (moveTimer > moveLimit || (moveTimer > moveLimit/2 && sprinting)){
             if (nextMove != empty){
@@ -105,6 +114,11 @@ public class PlayerController : MonoBehaviour
             } else {
                 CheckMoveLocation(movingDirection);
             }
+        }
+
+        if (goldenMouseTimer > goldenMouseLimit){
+            goldenMouseTimer = 0;
+            mouseManager.MoveGoldenMouse();
         }
     }
 
@@ -124,7 +138,7 @@ public class PlayerController : MonoBehaviour
 
     private void CheckMoveLocation(Vector2 newMove){
         moveTimer = 0;
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, newMove, 1);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, newMove, 1, layerMask);
         movingDirection = newMove;
         nextMove = empty;
         if (moveBuffer != empty){
@@ -138,6 +152,12 @@ public class PlayerController : MonoBehaviour
             Destroy(hit.transform.gameObject);
             IncreaseBody();
             PerformMove(newMove);
+            mouseManager.SpawnMouse();
+        } else if (hit.transform.tag == "GoldenMouse") {    //Move & Eat special mouse
+            Destroy(hit.transform.gameObject);
+            IncreaseBody();
+            PerformMove(newMove);
+            mouseManager.EatGoldenMouse();
         } else if (hit.transform.tag == "Door") {  //Exit door, must check if opened or closed
             //Check here if door open
             Die();
