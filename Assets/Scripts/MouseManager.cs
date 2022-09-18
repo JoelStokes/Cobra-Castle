@@ -75,7 +75,7 @@ public class MouseManager : MonoBehaviour
 
             do{
                 if (moveList.Count-1 > -1){
-                    int randomValue = Random.Range(0, moveList.Count-1);
+                    int randomValue = Random.Range(0, moveList.Count);
                     moveDirection = moveList[randomValue];
                     moveList.RemoveAt(randomValue);
                 } else {

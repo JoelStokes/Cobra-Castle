@@ -8,6 +8,7 @@ TagManager:
   - Mouse
   - Tail
   - GoldenMouse
+  - Body
   layers:
   - Default
   - TransparentFX

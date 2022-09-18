@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     private List<SpriteRenderer> BodyRenderers = new List<SpriteRenderer>();    //All body part SpriteRenderers to change sprites based on move directions
     private List<Vector2> previousMoves = new List<Vector2>();  //List of previous moves to apply to body parts
     private MouseManager mouseManager;
+    private LevelManager levelManager;
 
     //Score Variables
     private int miceEaten;
@@ -55,6 +56,8 @@ public class PlayerController : MonoBehaviour
         layerMask =~ LayerMask.GetMask("Head");  //Prevent Move from detecting self. Needed head box to prevent mouse spawns in face
 
         mouseManager = GameObject.Find("MouseManager").GetComponent<MouseManager>();
+        levelManager = GameObject.Find("UI").GetComponent<LevelManager>();
+
         goldenMouseLimit = moveLimit * 2;
 
         empty = new Vector2(50,50);
@@ -73,6 +76,7 @@ public class PlayerController : MonoBehaviour
             Body.Add(BodySegment);
         }
 
+        Body[Body.Count-1].tag = "Tail";
         Spawn();
     }
 
@@ -286,6 +290,8 @@ public class PlayerController : MonoBehaviour
     }
 
     private void IncreaseBody(){
+        levelManager.UpdateMiceCount();
+
         bodyLength++;
 
         GameObject BodySegment = GameObject.Instantiate(BodyPrefab, new Vector3(
@@ -297,6 +303,9 @@ public class PlayerController : MonoBehaviour
 
         BodyRenderers[BodyRenderers.Count-1].sprite = BodyRenderers[BodyRenderers.Count-2].sprite;
         Body[Body.Count-1].transform.rotation = Body[Body.Count-2].transform.rotation;
+
+        Body[Body.Count-1].tag = "Tail";    //Update current tail segment to prevent death on tail touch (since tail touch technically can never happen)
+        Body[Body.Count-2].tag = "Body";
     }
 
     private void Die(){
