@@ -7,10 +7,6 @@ using TMPro;
 //Contains Objects to color, Door, Arrow, & scene's Text
 public class LevelManager : MonoBehaviour
 {
-    public Color[] FGColor; //Color arrays for each levels bright, dark, & darkest color. Array position will match & go up by 1 per floor
-    public Color[] BGColor;
-    public Color[] FarColor;
-
     public SpriteRenderer[] FGObjects;
     public SpriteRenderer[] BGObjects;
     public SpriteRenderer[] FarObject;  //Only Farthest BG, UI Blocks
@@ -23,11 +19,7 @@ public class LevelManager : MonoBehaviour
 
     public bool isLabyrinth = false;    //Gamemode of Level
 
-    private int miceCounter = 12;
-
-    // Start is called before the first frame update
-    void Start()
-    {
+    public void SetColor(Color FGColor, Color BGColor, Color FarColor){
         for (int i=0; i<FGObjects.Length; i++){
             FGObjects[i].color = FGColor;
         }
@@ -41,27 +33,29 @@ public class LevelManager : MonoBehaviour
         }    
     }
 
-    public void UpdateMiceCount(){
-        miceCounter--;
-
-        if (miceCounter > 9){
-            MiceText.SetText(miceCounter + " Mice Left");
-        } else if (miceCounter > 1){
-            MiceText.SetText("0" + miceCounter + " Mice Left");
-        } else if (miceCounter == 1) {
-            MiceText.SetText("1 Mouse Left");
+    public void UpdateMiceCount(int miceCount){
+        if (!isLabyrinth){
+            if (miceCount > 9){
+                MiceText.SetText(miceCount + " Mice Left");
+            } else if (miceCount > 1){
+                MiceText.SetText("0" + miceCount + " Mice Left");
+            } else if (miceCount == 1) {
+                MiceText.SetText("1 Mouse Left");
+            } else {
+                MiceText.SetText("Exit Opened!");
+                OpenExitDoor();
+            }
         } else {
-            MiceText.SetText("Exit Opened!");
-            OpenExitDoor();
+            //Have door open at start, mice eaten does not change UI
         }
     }
 
-    public void UpdateScore(){
-
+    public void UpdateScore(int newScore){
+        ScoreText.SetText(newScore.ToString("0000000"));
     }
 
-    public void UpdateLives(){
-
+    public void UpdateLives(int newLives){
+        LivesText.SetText(newLives.ToString("0"));
     }
 
     private void OpenExitDoor(){

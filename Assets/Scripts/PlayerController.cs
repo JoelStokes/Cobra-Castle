@@ -17,13 +17,11 @@ public class PlayerController : MonoBehaviour
     public Sprite bodyDownRightImg;
     public Sprite bodyDownLeftImg;
 
-    private int lives = 3;
     private int bodyLength = 4;
     private List<GameObject> Body = new List<GameObject>(); //All connected body parts
     private List<SpriteRenderer> BodyRenderers = new List<SpriteRenderer>();    //All body part SpriteRenderers to change sprites based on move directions
     private List<Vector2> previousMoves = new List<Vector2>();  //List of previous moves to apply to body parts
     private MouseManager mouseManager;
-    private LevelManager levelManager;
 
     //Score Variables
     private int miceEaten;
@@ -58,7 +56,7 @@ public class PlayerController : MonoBehaviour
         layerMask =~ LayerMask.GetMask("Head");  //Prevent Move from detecting self. Needed head box to prevent mouse spawns in face
 
         mouseManager = GameObject.Find("MouseManager").GetComponent<MouseManager>();
-        levelManager = GameObject.Find("UI").GetComponent<LevelManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         goldenMouseLimit = moveLimit * 2;
 
@@ -81,7 +79,6 @@ public class PlayerController : MonoBehaviour
         Body[Body.Count-1].tag = "Tail";
         Spawn();
 
-        gameManager.
     }
 
     //Add some sort of input buffer system, cache the next move to prevent
@@ -131,6 +128,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Spawn(){   //Place player at start location with body trailing behind
+        previousMoves.Clear();
         transform.position = new Vector3(SpawnLocation.x, SpawnLocation.y, transform.position.z);
         transform.eulerAngles = new Vector3(0, 0, (float)Direction.Right);
         previousMoves.Insert(0, SpawnLocation);
@@ -160,14 +158,17 @@ public class PlayerController : MonoBehaviour
             Destroy(hit.transform.gameObject);
             IncreaseBody();
             PerformMove(newMove);
+            gameManager.AddMouse();
             mouseManager.SpawnMouse();
         } else if (hit.transform.tag == "GoldenMouse") {    //Move & Eat special mouse
             Destroy(hit.transform.gameObject);
             IncreaseBody();
+            gameManager.AddGoldenMouse();
             PerformMove(newMove);
             mouseManager.EatGoldenMouse();
         } else if (hit.transform.tag == "Door") {  //Exit door, must check if opened or closed
             //Check here if door open
+            gameManager.AddDoor();
             Die();
         } else {    //Will collide with wall
             Die();
@@ -294,8 +295,6 @@ public class PlayerController : MonoBehaviour
     }
 
     private void IncreaseBody(){
-        levelManager.UpdateMiceCount();
-
         bodyLength++;
 
         GameObject BodySegment = GameObject.Instantiate(BodyPrefab, new Vector3(
@@ -313,12 +312,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Die(){
-        if (lives > 1){
-            previousMoves.Clear();
-            Spawn();
-            lives--;
-        } else {    //Game Over-
-            Destroy(gameObject);
-        }
+        gameManager.AddDeath(); //If no remaining lives, scene will change before Spawn call hit
+        Spawn();
     }
 }

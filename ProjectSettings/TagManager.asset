@@ -9,6 +9,7 @@ TagManager:
   - Tail
   - GoldenMouse
   - Body
+  - GameManager
   layers:
   - Default
   - TransparentFX

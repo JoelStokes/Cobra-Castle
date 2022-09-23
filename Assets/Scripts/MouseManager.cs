@@ -13,7 +13,6 @@ public class MouseManager : MonoBehaviour
     private List<Vector2> SpawnGrid = new List<Vector2>();
 
     private int mouseCount = 0;
-    private int mouseLim = 10;
     private bool goldenMouseActive = false;
     private GameObject GoldenMouse;
 
