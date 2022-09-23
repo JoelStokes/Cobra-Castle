@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-//Lives across multiple 
+//Logic for the specific level
+//Contains Objects to color, Door, Arrow, & scene's Text
 public class LevelManager : MonoBehaviour
 {
     public Color[] FGColor; //Color arrays for each levels bright, dark, & darkest color. Array position will match & go up by 1 per floor
@@ -20,12 +21,7 @@ public class LevelManager : MonoBehaviour
     public TextMeshPro LivesText;
     public TextMeshPro ScoreText;
 
-    //How many points to add for each value
-    private int currentScore = 0;
-    private int mouseScore = 10;
-    private int goldenMouseScore = 25;
-    private int doorScore = 75;
-    private int levelModifier = 2;  //How much extra to add for each level
+    public bool isLabyrinth = false;    //Gamemode of Level
 
     private int miceCounter = 12;
 

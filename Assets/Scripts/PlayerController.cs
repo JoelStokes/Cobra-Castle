@@ -51,6 +51,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 empty;  //Since Vectors can't be null, set to this for empty checks
     private int layerMask;
 
+    private GameManager gameManager;
+
     void Start()
     {
         layerMask =~ LayerMask.GetMask("Head");  //Prevent Move from detecting self. Needed head box to prevent mouse spawns in face
@@ -78,6 +80,8 @@ public class PlayerController : MonoBehaviour
 
         Body[Body.Count-1].tag = "Tail";
         Spawn();
+
+        gameManager.
     }
 
     //Add some sort of input buffer system, cache the next move to prevent
