@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     public Color[] BGColor;
     public Color[] FarColor;
 
+    public Scene[] MouseRooms;
+    public Scene[] LabyrinthRooms;
+
     private int lives = 3;
     private int miceStart = 12;
     private int miceRemaining;
@@ -110,5 +113,15 @@ public class GameManager : MonoBehaviour
     private void UpdateScore(){
         score = (totalMice * miceValue) + (totalGoldenMice * goldenMiceValue) + (totalDoors * doorValue);
         currentLevelManager.UpdateScore(score);
+    }
+
+    public void LoadNewLevel(bool isLabyrinth){ //Find way to contain scene names since you can't use real Scene variables (would be wasteful)
+        if (isLabyrinth){
+            int level = Random.Range(0,LabyrinthRooms.Length);
+            SceneManager.LoadScene(LabyrinthRooms[level]);
+        } else {
+            int level = Random.Range(0,MouseRooms.Length);
+            SceneManager.LoadScene(MouseRooms[level]);
+        }
     }
 }
