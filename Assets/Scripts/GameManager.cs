@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
     public Color[] BGColor;
     public Color[] FarColor;
 
-    public Scene[] MouseRooms;
-    public Scene[] LabyrinthRooms;
+    public int mouseSceneStart;
+    public int labyrinthScenesStart;
 
     private int lives = 3;
     private int miceStart = 12;
@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     private int doorValue = 75;
 
     private int floor = 0;    //Currently unused, should add higher score counts for higher floors?
+    private bool isLabyrinth = false;
 
     private LevelManager currentLevelManager;
 
@@ -92,22 +93,10 @@ public class GameManager : MonoBehaviour
         currentLevelManager.UpdateLives(lives);
     }
 
-    public void LoadNewScene(){ //Choose random level to boot next from either mouse or labyrinth pool
-        if(currentLevelManager.isLabyrinth){
-
-        } else {
-
-        }
-    }
-
     private void UpdateUI(){    //Called on new scene load to make sure all variables match correct values
         currentLevelManager.UpdateLives(lives);
         currentLevelManager.UpdateMiceCount(miceRemaining);
         UpdateScore();
-    }
-
-    private void UpdateLives(){
-
     }
 
     private void UpdateScore(){
@@ -115,13 +104,24 @@ public class GameManager : MonoBehaviour
         currentLevelManager.UpdateScore(score);
     }
 
-    public void LoadNewLevel(bool isLabyrinth){ //Find way to contain scene names since you can't use real Scene variables (would be wasteful)
+    public void LoadNewLevel(bool isLabyrinth){ //Scene #1 is Title, #2 is Game Over
+        int level;
         if (isLabyrinth){
-            int level = Random.Range(0,LabyrinthRooms.Length);
-            SceneManager.LoadScene(LabyrinthRooms[level]);
+            level = Random.Range(mouseSceneStart, labyrinthScenesStart);
         } else {
-            int level = Random.Range(0,MouseRooms.Length);
-            SceneManager.LoadScene(MouseRooms[level]);
+            level = Random.Range(labyrinthScenesStart, SceneManager.sceneCountInBuildSettings);
         }
+
+        SceneManager.LoadScene(level);
+    }
+
+    private void ResetValues(){
+        score = 0;
+        totalDoors = 0;
+        totalMice = 0;
+        totalGoldenMice = 0;
+        floor = 0;
+        miceStart = 12;
+        lives = 3;
     }
 }
