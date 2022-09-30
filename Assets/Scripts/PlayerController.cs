@@ -165,7 +165,7 @@ public class PlayerController : MonoBehaviour
             IncreaseBody();
             gameManager.AddGoldenMouse();
             PerformMove(newMove);
-            mouseManager.EatGoldenMouse();
+            mouseManager.EatGoldenMouse();  //Need to prevent new mouse spawns if in Labyrinth
         } else if (hit.transform.tag == "Door") {  //Exit door, must check if opened or closed
             //Check here if door open
             gameManager.AddDoor();

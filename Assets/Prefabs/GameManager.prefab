@@ -80,5 +80,5 @@ MonoBehaviour:
   - {r: 0.09803922, g: 0.055136546, b: 0, a: 1}
   - {r: 0.037697624, g: 0, b: 0.09803922, a: 1}
   - {r: 0.09433961, g: 0.047763128, b: 0.08408495, a: 1}
-  MouseRooms: []
-  LabyrinthRooms: []
+  mouseSceneStart: 2
+  labyrinthScenesStart: 4
