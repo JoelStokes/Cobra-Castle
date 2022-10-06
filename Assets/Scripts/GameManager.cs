@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
         if (lives > 0){
             lives--;
         } else {
-            //Game Over Sequence
+            SceneManager.LoadScene("GameOver");
         }
         
         currentLevelManager.UpdateLives(lives);
