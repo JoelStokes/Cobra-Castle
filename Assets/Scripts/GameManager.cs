@@ -54,12 +54,14 @@ public class GameManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) //Get new Scene's LevelManager
     {
-        currentLevelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-        
-        currentLevelManager.SetColor(FGColor[floor], BGColor[floor], FarColor[floor]);
+        if (scene.name != "Title" && scene.name != "GameOver"){ //No Level Info to load on Title or Game Over
+            currentLevelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+            
+            currentLevelManager.SetColor(FGColor[floor], BGColor[floor], FarColor[floor]);
 
-        miceRemaining = miceStart;
-        UpdateUI();
+            miceRemaining = miceStart;
+            UpdateUI();
+        }
     }
 
     public void AddMouse(){
@@ -87,6 +89,13 @@ public class GameManager : MonoBehaviour
         if (lives > 0){
             lives--;
         } else {
+            PlayerPrefs.SetInt("Prev Score", score);
+
+            int highScore = PlayerPrefs.GetInt("High Score");   //If not existant, should return 0
+            if (score > highScore){
+                PlayerPrefs.SetInt("High Score", score);
+            }
+
             SceneManager.LoadScene("GameOver");
         }
         
@@ -113,6 +122,8 @@ public class GameManager : MonoBehaviour
         }
 
         SceneManager.LoadScene(level);
+
+        //SOMETHING WRONG HERE, got labyrinth when isLabyrinth passed in false from title
     }
 
     private void ResetValues(){

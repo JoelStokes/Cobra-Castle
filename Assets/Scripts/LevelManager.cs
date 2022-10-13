@@ -51,7 +51,7 @@ public class LevelManager : MonoBehaviour
     }
 
     public void UpdateScore(int newScore){
-        ScoreText.SetText(newScore.ToString("0000000"));
+        ScoreText.SetText(newScore.ToString("000000"));
     }
 
     public void UpdateLives(int newLives){
