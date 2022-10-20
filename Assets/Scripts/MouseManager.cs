@@ -16,6 +16,7 @@ public class MouseManager : MonoBehaviour
     private bool goldenMouseActive = false;
     private GameObject GoldenMouse;
 
+    private GameManager gameManager;
     private int layerMask;
 
     // Start is called before the first frame update
@@ -23,8 +24,12 @@ public class MouseManager : MonoBehaviour
     {
         layerMask =~ LayerMask.GetMask("GoldenMouse");  //Prevent Golden Mouse Raycast from hitting self
 
-        PopulateGridList();
-        SpawnMouse();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        if (!gameManager.CheckIsLabyrinth()){
+            PopulateGridList();
+            SpawnMouse();
+        }
     }
 
     private void PopulateGridList(){    //Check for colliders on each grid segment. If none, add to SpawnGrid as viable mouse spawning location
@@ -53,9 +58,16 @@ public class MouseManager : MonoBehaviour
         int randomLocation;
         Collider2D collider;
 
+        int safetyCounter = 0;
         do {    //Loop until position with no collider is found to avoid placing mouse on taken tile
             randomLocation = Random.Range(0, SpawnGrid.Count-1);
             collider = Physics2D.OverlapPoint(new Vector2(SpawnGrid[randomLocation].x, SpawnGrid[randomLocation].y), ~0, -1, 1);
+        
+            safetyCounter++;
+            if (safetyCounter > 200){
+                Debug.Log("Error! Exceeded 200 loops on Mouse Placement! Infinite Loop prevention triggered");
+                break;
+            }
         } while (collider != null);
         return new Vector3(SpawnGrid[randomLocation].x, SpawnGrid[randomLocation].y, 0);
     }
@@ -80,6 +92,7 @@ public class MouseManager : MonoBehaviour
                 } else {
                     moveDirection = Vector2.zero;   //Failsafe, set move & raycastDistance to 0, Golden Mouse is trapped and can't move
                     raycastDistance = 0;
+                    break;
                 }
 
                 hit = Physics2D.Raycast(new Vector2(GoldenMouse.transform.position.x, GoldenMouse.transform.position.y), moveDirection, raycastDistance, layerMask);

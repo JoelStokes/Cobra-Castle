@@ -16,7 +16,7 @@ public class TitleController : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)){
-            GameObject.Find("GameManager").GetComponent<GameManager>().LoadNewLevel(false);
+            GameObject.Find("GameManager").GetComponent<GameManager>().LoadNewLevel(true);
         }
     }
 }

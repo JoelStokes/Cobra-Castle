@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     private int doorValue = 75;
 
     private int floor = 0;    //Currently unused, should add higher score counts for higher floors?
+    private float floorSpeed = .05f;
     private bool isLabyrinth = false;
 
     private LevelManager currentLevelManager;
@@ -59,7 +60,12 @@ public class GameManager : MonoBehaviour
             
             currentLevelManager.SetColor(FGColor[floor], BGColor[floor], FarColor[floor]);
 
-            miceRemaining = miceStart;
+            if (currentLevelManager.isLabyrinth){
+                miceRemaining = 0;
+            } else {
+                miceRemaining = miceStart;
+            }
+
             UpdateUI();
         }
     }
@@ -81,6 +87,11 @@ public class GameManager : MonoBehaviour
     public void AddDoor(){
         totalDoors++;
         UpdateScore();
+
+        if (currentLevelManager.isLabyrinth){
+            floor++;
+        }
+        LoadNewLevel(currentLevelManager.isLabyrinth);
     }
 
     public void AddDeath(){
@@ -134,5 +145,17 @@ public class GameManager : MonoBehaviour
         floor = 0;
         miceStart = 12;
         lives = 3;
+    }
+
+    public bool CheckMiceFinished(){
+        return (miceRemaining <= 0);
+    }
+
+    public bool CheckIsLabyrinth(){
+        return (currentLevelManager.isLabyrinth);
+    }
+
+    public float GetFloorSpeed(){
+        return (floor * floorSpeed);
     }
 }

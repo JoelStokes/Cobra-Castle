@@ -46,7 +46,7 @@ public class LevelManager : MonoBehaviour
                 OpenExitDoor();
             }
         } else {
-            //Have door open at start, mice eaten does not change UI
+            MiceText.SetText("Escape!");
         }
     }
 

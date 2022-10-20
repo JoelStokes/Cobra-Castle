@@ -78,7 +78,6 @@ public class PlayerController : MonoBehaviour
 
         Body[Body.Count-1].tag = "Tail";
         Spawn();
-
     }
 
     //Add some sort of input buffer system, cache the next move to prevent
@@ -113,7 +112,8 @@ public class PlayerController : MonoBehaviour
         moveTimer += Time.deltaTime;
         goldenMouseTimer += Time.deltaTime;
 
-        if (moveTimer > moveLimit || (moveTimer > moveLimit/2 && sprinting)){
+        if (moveTimer > (moveLimit - gameManager.GetFloorSpeed()) 
+            || (moveTimer > (moveLimit - gameManager.GetFloorSpeed())/2 && sprinting)){
             if (nextMove != empty){
                 CheckMoveLocation(nextMove);
             } else {
@@ -167,9 +167,11 @@ public class PlayerController : MonoBehaviour
             PerformMove(newMove);
             mouseManager.EatGoldenMouse();  //Need to prevent new mouse spawns if in Labyrinth
         } else if (hit.transform.tag == "Door") {  //Exit door, must check if opened or closed
-            //Check here if door open
-            gameManager.AddDoor();
-            Die();
+            if (gameManager.CheckMiceFinished()){
+                gameManager.AddDoor();
+            } else {
+                Die();
+            }
         } else {    //Will collide with wall
             Die();
         }
