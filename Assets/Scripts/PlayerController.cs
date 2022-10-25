@@ -50,6 +50,8 @@ public class PlayerController : MonoBehaviour
     private int layerMask;
 
     private GameManager gameManager;
+    public bool started = false;
+    public bool controllable = true;
 
     void Start()
     {
@@ -84,46 +86,50 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Vector2 newInput = empty;
-        if (Input.GetKeyDown(KeyCode.RightArrow) && transform.rotation.eulerAngles.z != (float)Direction.Left){
-            newInput = new Vector2(1, 0);
-        } else if (Input.GetKeyDown(KeyCode.LeftArrow) && transform.rotation.eulerAngles.z != (float)Direction.Right){
-            newInput = new Vector2(-1,0);
-        } else if (Input.GetKeyDown(KeyCode.UpArrow) && transform.rotation.eulerAngles.z != (float)Direction.Down){
-            newInput = new Vector2(0,1);
-        } else if (Input.GetKeyDown(KeyCode.DownArrow) && transform.rotation.eulerAngles.z != (float)Direction.Up){
-            newInput = new Vector2(0,-1);
-        }
+        if (controllable){
+            Vector2 newInput = empty;
+            if (Input.GetKeyDown(KeyCode.RightArrow) && transform.rotation.eulerAngles.z != (float)Direction.Left){
+                newInput = new Vector2(1, 0);
+            } else if (Input.GetKeyDown(KeyCode.LeftArrow) && transform.rotation.eulerAngles.z != (float)Direction.Right){
+                newInput = new Vector2(-1,0);
+            } else if (Input.GetKeyDown(KeyCode.UpArrow) && transform.rotation.eulerAngles.z != (float)Direction.Down){
+                newInput = new Vector2(0,1);
+            } else if (Input.GetKeyDown(KeyCode.DownArrow) && transform.rotation.eulerAngles.z != (float)Direction.Up){
+                newInput = new Vector2(0,-1);
+            }
 
-        if (nextMove == empty && newInput  != empty){ //Help prevent eaten moves in fast-paced game, make extra moves go into input buffer to come out next move cycle
-            nextMove = newInput;
-        } else if (newInput != empty) {
-            moveBuffer = newInput;
-        }
+            if (nextMove == empty && newInput  != empty){ //Help prevent eaten moves in fast-paced game, make extra moves go into input buffer to come out next move cycle
+                nextMove = newInput;
+            } else if (newInput != empty) {
+                moveBuffer = newInput;
+            }
 
-        if (Input.GetKey(KeyCode.Space)){
-            sprinting = true;
-        } else {
-            sprinting = false;
+            if (Input.GetKey(KeyCode.Space)){
+                sprinting = true;
+            } else {
+                sprinting = false;
+            }
         }
     }
 
     void FixedUpdate() {
-        moveTimer += Time.deltaTime;
-        goldenMouseTimer += Time.deltaTime;
+        if (started){
+            moveTimer += Time.deltaTime;
+            goldenMouseTimer += Time.deltaTime;
 
-        if (moveTimer > (moveLimit - gameManager.GetFloorSpeed()) 
-            || (moveTimer > (moveLimit - gameManager.GetFloorSpeed())/2 && sprinting)){
-            if (nextMove != empty){
-                CheckMoveLocation(nextMove);
-            } else {
-                CheckMoveLocation(movingDirection);
+            if (moveTimer > (moveLimit - gameManager.GetFloorSpeed()) 
+                || (moveTimer > (moveLimit - gameManager.GetFloorSpeed())/2 && sprinting)){
+                if (nextMove != empty){
+                    CheckMoveLocation(nextMove);
+                } else {
+                    CheckMoveLocation(movingDirection);
+                }
             }
-        }
 
-        if (goldenMouseTimer > goldenMouseLimit){
-            goldenMouseTimer = 0;
-            mouseManager.MoveGoldenMouse();
+            if (goldenMouseTimer > goldenMouseLimit){
+                goldenMouseTimer = 0;
+                mouseManager.MoveGoldenMouse();
+            }
         }
     }
 

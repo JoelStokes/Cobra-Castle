@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     private bool isLabyrinth = false;
 
     private LevelManager currentLevelManager;
+    private PlayerController currentPlayerController;
 
     private void Awake() {
         GameObject[] objs = GameObject.FindGameObjectsWithTag("GameManager");
@@ -57,7 +58,8 @@ public class GameManager : MonoBehaviour
     {
         if (scene.name != "Title" && scene.name != "GameOver"){ //No Level Info to load on Title or Game Over
             currentLevelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-            
+            currentPlayerController = GameObject.Find("Player").GetComponent<PlayerController>();
+
             currentLevelManager.SetColor(FGColor[floor], BGColor[floor], FarColor[floor]);
 
             if (currentLevelManager.isLabyrinth){
@@ -68,6 +70,10 @@ public class GameManager : MonoBehaviour
 
             UpdateUI();
         }
+    }
+
+    public void StartPlayer(){
+        currentPlayerController.started = true;
     }
 
     public void AddMouse(){
@@ -91,7 +97,8 @@ public class GameManager : MonoBehaviour
         if (currentLevelManager.isLabyrinth){
             floor++;
         }
-        LoadNewLevel(currentLevelManager.isLabyrinth);
+
+        currentLevelManager.BeginEndAnim();
     }
 
     public void AddDeath(){

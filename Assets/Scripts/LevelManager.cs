@@ -17,7 +17,49 @@ public class LevelManager : MonoBehaviour
     public TextMeshPro LivesText;
     public TextMeshPro ScoreText;
 
+    private GameObject Camera;
+
+    private float animSpeed = .075f;
+    private float animTimer = 0;
+    private float animEdgePos = 18;
+    private float animCurrentPos = 0;
+    private bool animating = true;
+    private bool startAnim = true;
+
     public bool isLabyrinth = false;    //Gamemode of Level
+
+    private GameManager gameManager;
+
+    void Start(){
+        animCurrentPos = -animEdgePos;
+
+        Camera = GameObject.Find("Main Camera");
+        Camera.transform.position = new Vector3(animCurrentPos, Camera.transform.position.y, Camera.transform.position.z);
+    
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
+    void Update(){  //Camera Scroll for start/end of level
+        if (animating){
+            animTimer += Time.deltaTime;
+
+            if (animTimer >= animSpeed){
+                animCurrentPos++;
+                Camera.transform.position = new Vector3(animCurrentPos, Camera.transform.position.y, Camera.transform.position.z);
+
+                if ((animCurrentPos < 0 && startAnim) || (animCurrentPos < animEdgePos && !startAnim)){
+                    animTimer = 0;
+                } else {
+                    animating = false;
+                    if (startAnim){
+                        gameManager.StartPlayer();
+                    } else {
+                        gameManager.LoadNewLevel(isLabyrinth);
+                    }
+                }
+            }
+        }
+    }
 
     public void SetColor(Color FGColor, Color BGColor, Color FarColor){
         for (int i=0; i<FGObjects.Length; i++){
@@ -60,5 +102,10 @@ public class LevelManager : MonoBehaviour
 
     private void OpenExitDoor(){
         ExitArrow.SetActive(true);
+    }
+
+    public void BeginEndAnim(){
+        startAnim = false;
+        animating = true;
     }
 }
