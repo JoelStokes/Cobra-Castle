@@ -10,6 +10,9 @@ TagManager:
   - GoldenMouse
   - Body
   - GameManager
+  - FG
+  - BG
+  - Far
   layers:
   - Default
   - TransparentFX

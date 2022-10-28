@@ -4,27 +4,26 @@ using UnityEngine;
 using TMPro;
 
 //Logic for the specific level
-//Contains Objects to color, Door, Arrow, & scene's Text
+//Contains Objects color management, Door, Arrow, & scene's Text
 public class LevelManager : MonoBehaviour
 {
-    public SpriteRenderer[] FGObjects;
-    public SpriteRenderer[] BGObjects;
-    public SpriteRenderer[] FarObject;  //Only Farthest BG, UI Blocks
-
     public GameObject ExitDoor;
     public GameObject ExitArrow;
     public TextMeshPro MiceText;
     public TextMeshPro LivesText;
     public TextMeshPro ScoreText;
+    public GameObject TransitionObjs;
+    public TextMeshPro LevelName;
 
     private GameObject Camera;
 
-    private float animSpeed = .075f;
+    private float animSpeed = .05f;
     private float animTimer = 0;
     private float animEdgePos = 18;
     private float animCurrentPos = 0;
     private bool animating = true;
     private bool startAnim = true;
+    private float transitionX = 19; //X Position Transition Object warps to on right side
 
     public bool isLabyrinth = false;    //Gamemode of Level
 
@@ -62,16 +61,20 @@ public class LevelManager : MonoBehaviour
     }
 
     public void SetColor(Color FGColor, Color BGColor, Color FarColor){
+        GameObject[] FGObjects = GameObject.FindGameObjectsWithTag("FG");
+        GameObject[] BGObjects = GameObject.FindGameObjectsWithTag("BG");
+        GameObject[] FarObject = GameObject.FindGameObjectsWithTag("Far");
+
         for (int i=0; i<FGObjects.Length; i++){
-            FGObjects[i].color = FGColor;
+            FGObjects[i].GetComponent<SpriteRenderer>().color = FGColor;
         }
 
         for (int i=0; i<BGObjects.Length; i++){
-            BGObjects[i].color = BGColor;
+            BGObjects[i].GetComponent<SpriteRenderer>().color = BGColor;
         }
 
         for (int i=0; i<FarObject.Length; i++){
-            FarObject[i].color = FarColor;
+            FarObject[i].GetComponent<SpriteRenderer>().color = FarColor;
         }    
     }
 
@@ -107,5 +110,10 @@ public class LevelManager : MonoBehaviour
     public void BeginEndAnim(){
         startAnim = false;
         animating = true;
+
+        LevelName.SetText(Get name for level here!);
+
+        TransitionObjs.transform.position = new Vector3(transitionX,
+            TransitionObjs.transform.position.y, TransitionObjs.transform.position.z);
     }
 }
