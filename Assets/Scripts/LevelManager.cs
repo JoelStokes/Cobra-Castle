@@ -14,10 +14,11 @@ public class LevelManager : MonoBehaviour
     public TextMeshPro ScoreText;
     public GameObject TransitionObjs;
     public TextMeshPro LevelName;
+    public Sprite OpenDoor;
 
     private GameObject Camera;
 
-    private float animSpeed = .05f;
+    private float animSpeed = .07f;
     private float animTimer = 0;
     private float animEdgePos = 18;
     private float animCurrentPos = 0;
@@ -36,6 +37,7 @@ public class LevelManager : MonoBehaviour
         Camera.transform.position = new Vector3(animCurrentPos, Camera.transform.position.y, Camera.transform.position.z);
     
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        LevelName.SetText(gameManager.GetLevelName());
     }
 
     void Update(){  //Camera Scroll for start/end of level
@@ -53,7 +55,7 @@ public class LevelManager : MonoBehaviour
                     if (startAnim){
                         gameManager.StartPlayer();
                     } else {
-                        gameManager.LoadNewLevel(isLabyrinth);
+                        gameManager.LoadNewLevel();
                     }
                 }
             }
@@ -104,6 +106,7 @@ public class LevelManager : MonoBehaviour
     }
 
     private void OpenExitDoor(){
+        ExitDoor.GetComponent<SpriteRenderer>().sprite = OpenDoor;
         ExitArrow.SetActive(true);
     }
 
@@ -111,7 +114,8 @@ public class LevelManager : MonoBehaviour
         startAnim = false;
         animating = true;
 
-        LevelName.SetText(Get name for level here!);
+        gameManager.SetNextLevel();
+        LevelName.SetText(gameManager.GetLevelName());
 
         TransitionObjs.transform.position = new Vector3(transitionX,
             TransitionObjs.transform.position.y, TransitionObjs.transform.position.z);

@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     private int floor = 0;    //Currently unused, should add higher score counts for higher floors?
     private float floorSpeed = .05f;
     private bool isLabyrinth = false;
+    private int nextLevel;
 
     private LevelManager currentLevelManager;
     private PlayerController currentPlayerController;
@@ -131,17 +132,20 @@ public class GameManager : MonoBehaviour
         currentLevelManager.UpdateScore(score);
     }
 
-    public void LoadNewLevel(bool isLabyrinth){ //Scene #1 is Title, #2 is Game Over
-        int level;
+    public void SetNextLevel(bool isLabyrinth){
         if (isLabyrinth){
-            level = Random.Range(mouseSceneStart, labyrinthScenesStart);
+            nextLevel = Random.Range(mouseSceneStart, labyrinthScenesStart);
         } else {
-            level = Random.Range(labyrinthScenesStart, SceneManager.sceneCountInBuildSettings);
+            nextLevel = Random.Range(labyrinthScenesStart, SceneManager.sceneCountInBuildSettings);
+        }
+    }
+
+    public void LoadNewLevel(){ //Scene #1 is Title, #2 is Game Over
+        if (nextLevel == 0){
+            SetNextLevel();
         }
 
-        SceneManager.LoadScene(level);
-
-        //SOMETHING WRONG HERE, got labyrinth when isLabyrinth passed in false from title
+        SceneManager.LoadScene(nextLevel);
     }
 
     private void ResetValues(){
@@ -164,5 +168,17 @@ public class GameManager : MonoBehaviour
 
     public float GetFloorSpeed(){
         return (floor * floorSpeed);
+    }
+
+    public string GetLevelName(){
+        string labyrinthLetter;
+        if (isLabyrinth){
+            labyrinthLetter = "B";
+        } else {
+            labyrinthLetter = "A";
+        }
+
+        string name = (floor+1) + "-" + labyrinthLetter + ": " + nextLevel; Swap to Level Naming system
+        return name;
     }
 }
