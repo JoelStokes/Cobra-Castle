@@ -19,4 +19,7 @@ public class TitleController : MonoBehaviour
             GameObject.Find("GameManager").GetComponent<GameManager>().LoadNewLevel(true);
         }
     }
+
+    //Need to start animation so Title looks like regular level transitions
+    //21.5 for scene change
 }

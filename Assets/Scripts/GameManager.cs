@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     private float floorSpeed = .05f;
     private bool isLabyrinth = false;
     private int nextLevel;
+    private List<string> LabyrinthLevels = new List<string>();
+    private List<string> MouseLevels = new List<string>();
 
     private LevelManager currentLevelManager;
     private PlayerController currentPlayerController;
@@ -45,6 +47,8 @@ public class GameManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(this.gameObject);
+
+        PopulateSceneList();
     }
 
     void OnEnable(){
@@ -70,6 +74,19 @@ public class GameManager : MonoBehaviour
             }
 
             UpdateUI();
+        }
+    }
+
+    private void PopulateSceneList(){
+        int sceneCount = SceneManager.sceneCountInBuildSettings;
+
+        for (int i=0; i < sceneCount; i++){
+            string name = SceneManager.GetSceneByBuildIndex(i).name;
+            if (name.Contains("L-")){
+                LabyrinthLevels.Add(name);
+            } else if (name.Contains("M-")){
+                MouseLevels.Add(name);
+            }
         }
     }
 
@@ -134,15 +151,15 @@ public class GameManager : MonoBehaviour
 
     public void SetNextLevel(bool isLabyrinth){
         if (isLabyrinth){
-            nextLevel = Random.Range(mouseSceneStart, labyrinthScenesStart);
+            nextLevel = Random.Range(0, LabyrinthLevels.Count);
         } else {
-            nextLevel = Random.Range(labyrinthScenesStart, SceneManager.sceneCountInBuildSettings);
+            nextLevel = Random.Range(0, MouseLevels.Count);
         }
     }
 
     public void LoadNewLevel(){ //Scene #1 is Title, #2 is Game Over
         if (nextLevel == 0){
-            SetNextLevel();
+            SetNextLevel(currentLevelManager.isLabyrinth);
         }
 
         SceneManager.LoadScene(nextLevel);
@@ -172,13 +189,16 @@ public class GameManager : MonoBehaviour
 
     public string GetLevelName(){
         string labyrinthLetter;
+        string levelName;
         if (isLabyrinth){
             labyrinthLetter = "B";
+            levelName = LabyrinthLevels(nextLevel);
         } else {
             labyrinthLetter = "A";
+            levelName = MouseLevels(nextLevel);
         }
 
-        string name = (floor+1) + "-" + labyrinthLetter + ": " + nextLevel; Swap to Level Naming system
+        string name = (floor+1) + "-" + labyrinthLetter + ": " + levelName.Substring(2,levelName.Length);
         return name;
     }
 }
