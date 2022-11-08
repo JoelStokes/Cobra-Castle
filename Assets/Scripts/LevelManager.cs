@@ -18,48 +18,17 @@ public class LevelManager : MonoBehaviour
 
     private GameObject Camera;
 
-    private float animSpeed = .07f;
-    private float animTimer = 0;
-    private float animEdgePos = 18;
-    private float animCurrentPos = 0;
-    private bool animating = true;
-    private bool startAnim = true;
+    public bool isLabyrinth = false;    //Gamemode of Level
     private float transitionX = 19; //X Position Transition Object warps to on right side
 
-    public bool isLabyrinth = false;    //Gamemode of Level
-
     private GameManager gameManager;
+    private CameraScroll cameraScroll;
 
-    void Start(){
-        animCurrentPos = -animEdgePos;
-
-        Camera = GameObject.Find("Main Camera");
-        Camera.transform.position = new Vector3(animCurrentPos, Camera.transform.position.y, Camera.transform.position.z);
-    
+    void Start(){    
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        cameraScroll = GameObject.Find("Main Camera").GetComponent<CameraScroll>();
+
         LevelName.SetText(gameManager.GetLevelName());
-    }
-
-    void Update(){  //Camera Scroll for start/end of level
-        if (animating){
-            animTimer += Time.deltaTime;
-
-            if (animTimer >= animSpeed){
-                animCurrentPos++;
-                Camera.transform.position = new Vector3(animCurrentPos, Camera.transform.position.y, Camera.transform.position.z);
-
-                if ((animCurrentPos < 0 && startAnim) || (animCurrentPos < animEdgePos && !startAnim)){
-                    animTimer = 0;
-                } else {
-                    animating = false;
-                    if (startAnim){
-                        gameManager.StartPlayer();
-                    } else {
-                        gameManager.LoadNewLevel();
-                    }
-                }
-            }
-        }
     }
 
     public void SetColor(Color FGColor, Color BGColor, Color FarColor){
@@ -111,10 +80,9 @@ public class LevelManager : MonoBehaviour
     }
 
     public void BeginEndAnim(){
-        startAnim = false;
-        animating = true;
+        cameraScroll.BeginEndAnim();
 
-        gameManager.SetNextLevel();
+        gameManager.SetNextLevel(isLabyrinth);
         LevelName.SetText(gameManager.GetLevelName());
 
         TransitionObjs.transform.position = new Vector3(transitionX,

@@ -11,9 +11,6 @@ public class GameManager : MonoBehaviour
     public Color[] BGColor;
     public Color[] FarColor;
 
-    public int mouseSceneStart;
-    public int labyrinthScenesStart;
-
     private int lives = 3;
     private int miceStart = 12;
     private int miceRemaining;
@@ -81,7 +78,12 @@ public class GameManager : MonoBehaviour
         int sceneCount = SceneManager.sceneCountInBuildSettings;
 
         for (int i=0; i < sceneCount; i++){
-            string name = SceneManager.GetSceneByBuildIndex(i).name;
+            string path = SceneUtility.GetScenePathByBuildIndex(i); //GetSceneByBuildIndex only works for loaded scenes...
+            int slash = path.LastIndexOf('/');
+            string uncroppedName = path.Substring(slash + 1);
+            int dot = uncroppedName.LastIndexOf('.');
+            string name = uncroppedName.Substring(0, dot);
+            
             if (name.Contains("L-")){
                 LabyrinthLevels.Add(name);
             } else if (name.Contains("M-")){
@@ -157,12 +159,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void LoadNewLevel(){ //Scene #1 is Title, #2 is Game Over
-        if (nextLevel == 0){
-            SetNextLevel(currentLevelManager.isLabyrinth);
+    public void LoadNewLevel(){ Need to standardize "Is Labyrinth" since it's different each time
+        if (isLabyrinth){
+            SceneManager.LoadScene(LabyrinthLevels[nextLevel]);
+        } else {
+            SceneManager.LoadScene(MouseLevels[nextLevel]);
         }
-
-        SceneManager.LoadScene(nextLevel);
     }
 
     private void ResetValues(){
@@ -192,13 +194,13 @@ public class GameManager : MonoBehaviour
         string levelName;
         if (isLabyrinth){
             labyrinthLetter = "B";
-            levelName = LabyrinthLevels(nextLevel);
+            levelName = LabyrinthLevels[nextLevel];
         } else {
             labyrinthLetter = "A";
-            levelName = MouseLevels(nextLevel);
+            levelName = MouseLevels[nextLevel];
         }
 
-        string name = (floor+1) + "-" + labyrinthLetter + ": " + levelName.Substring(2,levelName.Length);
+        string name = (floor+1) + "-" + labyrinthLetter + ": " + levelName.Substring(2,levelName.Length-2);
         return name;
     }
 }
