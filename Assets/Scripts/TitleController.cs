@@ -5,6 +5,8 @@ using TMPro;
 
 public class TitleController : MonoBehaviour
 {
+    public float screenAnimEdge;
+
     public TextMeshPro prevScore;
     public TextMeshPro highScore;
     public TextMeshPro levelName;
@@ -34,7 +36,7 @@ public class TitleController : MonoBehaviour
         gameManager.SetNextLevel(false);
         levelName.SetText(gameManager.GetLevelName());
         animating = true;
-        cameraScroll.ChangeEndPos(21f);
+        cameraScroll.ChangeEndPos(screenAnimEdge);
         cameraScroll.ChangeCurrentPos(0f);
 
         cameraScroll.BeginEndAnim();

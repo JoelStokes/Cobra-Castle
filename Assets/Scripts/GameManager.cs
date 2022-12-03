@@ -159,7 +159,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void LoadNewLevel(){ Need to standardize "Is Labyrinth" since it's different each time
+    public void LoadNewLevel(){ //Need to standardize "Is Labyrinth" since it's different each time
         if (isLabyrinth){
             SceneManager.LoadScene(LabyrinthLevels[nextLevel]);
         } else {

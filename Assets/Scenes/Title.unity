@@ -1444,6 +1444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab3bcf58d55e7a3478ec3eb880243e79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  screenAnimEdge: 21.5
   prevScore: {fileID: 1746257939}
   highScore: {fileID: 1056757024}
   levelName: {fileID: 904459811}
