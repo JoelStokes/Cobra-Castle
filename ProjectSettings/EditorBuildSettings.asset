@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/GameOver.unity
     guid: 97725575437668d409030da1da429409
   - enabled: 1
-    path: Assets/Scenes/MiceRooms/M-Donut.unity
+    path: Assets/Scenes/MiceRooms/M-Dovecote.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
     path: Assets/Scenes/MiceRooms/M-Sewer System.unity
@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LabyrinthRooms/L-Dots.unity
     guid: 9e3be24bac82b4042887e990228ebd8e
+  - enabled: 1
+    path: Assets/Scenes/MiceRooms/M-Throne Room.unity
+    guid: ccc584dd97540d64586338b9200f99a5
   m_configObjects: {}

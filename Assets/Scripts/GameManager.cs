@@ -151,7 +151,8 @@ public class GameManager : MonoBehaviour
         currentLevelManager.UpdateScore(score);
     }
 
-    public void SetNextLevel(bool isLabyrinth){
+    public void SetNextLevel(bool levelIsLabyrinth){
+        isLabyrinth = levelIsLabyrinth; //messy setting, but it's why level load might be wrong
         if (isLabyrinth){
             nextLevel = Random.Range(0, LabyrinthLevels.Count);
         } else {
@@ -159,7 +160,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void LoadNewLevel(){ //Need to standardize "Is Labyrinth" since it's different each time
+    public void LoadNewLevel(){ SOLVE WHY never loads labyrinth & level changes
         if (isLabyrinth){
             SceneManager.LoadScene(LabyrinthLevels[nextLevel]);
         } else {
