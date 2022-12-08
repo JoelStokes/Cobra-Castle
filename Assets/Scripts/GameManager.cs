@@ -151,8 +151,7 @@ public class GameManager : MonoBehaviour
         currentLevelManager.UpdateScore(score);
     }
 
-    public void SetNextLevel(bool levelIsLabyrinth){
-        isLabyrinth = levelIsLabyrinth; //messy setting, but it's why level load might be wrong
+    public void SetNextLevel(bool isLabyrinth){
         if (isLabyrinth){
             nextLevel = Random.Range(0, LabyrinthLevels.Count);
         } else {
@@ -160,11 +159,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void LoadNewLevel(){ SOLVE WHY never loads labyrinth & level changes
-        if (isLabyrinth){
-            SceneManager.LoadScene(LabyrinthLevels[nextLevel]);
-        } else {
+    public void LoadNewLevel(){
+        if (CheckIsLabyrinth()){
             SceneManager.LoadScene(MouseLevels[nextLevel]);
+        } else {
+            SceneManager.LoadScene(LabyrinthLevels[nextLevel]);
         }
     }
 
@@ -183,7 +182,11 @@ public class GameManager : MonoBehaviour
     }
 
     public bool CheckIsLabyrinth(){
-        return (currentLevelManager.isLabyrinth);
+        if (currentLevelManager){
+            return (currentLevelManager.isLabyrinth);
+        } else {
+            return true;    //With alternating levels, "true" at start so mouse loads first
+        }
     }
 
     public float GetFloorSpeed(){
