@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     private int floor = 0;    //Currently unused, should add higher score counts for higher floors?
     private float floorSpeed = .05f;
     private bool isLabyrinth = false;
+    private bool doorTouched = false;
     private int nextLevel;
     private List<string> LabyrinthLevels = new List<string>();
     private List<string> MouseLevels = new List<string>();
@@ -58,11 +59,13 @@ public class GameManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) //Get new Scene's LevelManager
     {
+        doorTouched = false;
         if (scene.name != "Title" && scene.name != "GameOver"){ //No Level Info to load on Title or Game Over
             currentLevelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
             currentPlayerController = GameObject.Find("Player").GetComponent<PlayerController>();
 
             currentLevelManager.SetColor(FGColor[floor], BGColor[floor], FarColor[floor]);
+
 
             if (currentLevelManager.isLabyrinth){
                 miceRemaining = 0;
@@ -111,14 +114,17 @@ public class GameManager : MonoBehaviour
     }
 
     public void AddDoor(){
-        totalDoors++;
-        UpdateScore();
+        if (!doorTouched){  //Prevent repeated levels during transition animation
+            totalDoors++;
+            UpdateScore();
 
-        if (currentLevelManager.isLabyrinth){
-            floor++;
+            if (currentLevelManager.isLabyrinth){
+                floor++;
+            }
+
+            currentLevelManager.BeginEndAnim();
+            doorTouched = true;
         }
-
-        currentLevelManager.BeginEndAnim();
     }
 
     public void AddDeath(){
@@ -151,11 +157,11 @@ public class GameManager : MonoBehaviour
         currentLevelManager.UpdateScore(score);
     }
 
-    public void SetNextLevel(bool isLabyrinth){
+    public void SetNextLevel(bool isLabyrinth){ Loading same level over and over
         if (isLabyrinth){
-            nextLevel = Random.Range(0, LabyrinthLevels.Count);
-        } else {
             nextLevel = Random.Range(0, MouseLevels.Count);
+        } else {
+            nextLevel = Random.Range(0, LabyrinthLevels.Count);
         }
     }
 
