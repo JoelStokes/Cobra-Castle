@@ -3081,6 +3081,22 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Far
       objectReference: {fileID: 0}
+    - target: {fileID: 6912516730699741560, guid: 93810d6f1c6fe9547961a9b6a064787d, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 6.9355
+      objectReference: {fileID: 0}
+    - target: {fileID: 6912516730699741560, guid: 93810d6f1c6fe9547961a9b6a064787d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.3552
+      objectReference: {fileID: 0}
+    - target: {fileID: 6912516730699741563, guid: 93810d6f1c6fe9547961a9b6a064787d, type: 3}
+      propertyPath: m_margin.z
+      value: -0.43518162
+      objectReference: {fileID: 0}
+    - target: {fileID: 6912516730699741563, guid: 93810d6f1c6fe9547961a9b6a064787d, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6912516730769780080, guid: 93810d6f1c6fe9547961a9b6a064787d, type: 3}
       propertyPath: m_RootOrder
       value: 0

@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
 
     private int floor = 0;    //Currently unused, should add higher score counts for higher floors?
     private float floorSpeed = .05f;
-    private bool isLabyrinth = false;
+    public bool isLabyrinth = false;
     private bool doorTouched = false;
     private int nextLevel;
     private List<string> LabyrinthLevels = new List<string>();
@@ -74,6 +74,8 @@ public class GameManager : MonoBehaviour
             }
 
             UpdateUI();
+        } else if (scene.name == "GameOver"){
+            SetGameOverValues();
         }
     }
 
@@ -157,16 +159,19 @@ public class GameManager : MonoBehaviour
         currentLevelManager.UpdateScore(score);
     }
 
-    public void SetNextLevel(bool isLabyrinth){ Loading same level over and over
+    public void SetNextLevel(bool LabyrinthStatus){
+        isLabyrinth = LabyrinthStatus;
+
         if (isLabyrinth){
             nextLevel = Random.Range(0, MouseLevels.Count);
         } else {
             nextLevel = Random.Range(0, LabyrinthLevels.Count);
         }
+        Debug.Log("Is Labyrinth: " + isLabyrinth + ", Next Level: " + nextLevel);
     }
 
     public void LoadNewLevel(){
-        if (CheckIsLabyrinth()){
+        if (isLabyrinth){
             SceneManager.LoadScene(MouseLevels[nextLevel]);
         } else {
             SceneManager.LoadScene(LabyrinthLevels[nextLevel]);
@@ -187,14 +192,6 @@ public class GameManager : MonoBehaviour
         return (miceRemaining <= 0);
     }
 
-    public bool CheckIsLabyrinth(){
-        if (currentLevelManager){
-            return (currentLevelManager.isLabyrinth);
-        } else {
-            return true;    //With alternating levels, "true" at start so mouse loads first
-        }
-    }
-
     public float GetFloorSpeed(){
         return (floor * floorSpeed);
     }
@@ -203,14 +200,18 @@ public class GameManager : MonoBehaviour
         string labyrinthLetter;
         string levelName;
         if (isLabyrinth){
-            labyrinthLetter = "B";
-            levelName = LabyrinthLevels[nextLevel];
-        } else {
             labyrinthLetter = "A";
             levelName = MouseLevels[nextLevel];
+        } else {
+            labyrinthLetter = "B";
+            levelName = LabyrinthLevels[nextLevel];
         }
 
         string name = (floor+1) + "-" + labyrinthLetter + ": " + levelName.Substring(2,levelName.Length-2);
         return name;
+    }
+
+    private void SetGameOverValues(){   Set the Game Over Values!
+        //Find GameOverController & set values
     }
 }

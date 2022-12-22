@@ -26,7 +26,7 @@ public class MouseManager : MonoBehaviour
 
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        if (!gameManager.CheckIsLabyrinth()){
+        if (gameManager.isLabyrinth){   //Set level before
             PopulateGridList();
             SpawnMouse();
         }

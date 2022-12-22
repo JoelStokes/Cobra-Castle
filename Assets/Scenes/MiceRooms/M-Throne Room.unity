@@ -10278,6 +10278,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MouseManager
       objectReference: {fileID: 0}
+    - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
+      propertyPath: bottomRight.y
+      value: -4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
 --- !u!1001 &1760049047459899066

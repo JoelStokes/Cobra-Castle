@@ -33,7 +33,7 @@ public class TitleController : MonoBehaviour
     }
 
     private void BeginEndAnim(){
-        gameManager.SetNextLevel(false);
+        gameManager.SetNextLevel(true);
         levelName.SetText(gameManager.GetLevelName());
         animating = true;
         cameraScroll.ChangeEndPos(screenAnimEdge);
