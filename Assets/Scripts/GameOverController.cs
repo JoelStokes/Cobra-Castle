@@ -22,4 +22,11 @@ public class GameOverController : MonoBehaviour
     {
         
     }
+
+    public void SetTextValues(int mice, int goldMice, int doors, int score){
+        MiceCount.SetText(mice.ToString());
+        GoldMiceCount.SetText(goldMice.ToString());
+        DoorCount.SetText(doors.ToString());
+        ScoreCount.SetText(score.ToString());
+    }
 }

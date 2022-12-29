@@ -211,7 +211,8 @@ public class GameManager : MonoBehaviour
         return name;
     }
 
-    private void SetGameOverValues(){   Set the Game Over Values!
-        //Find GameOverController & set values
+    private void SetGameOverValues(){
+        GameObject GOManager = GameObject.Find("GameOverManager");
+        GOManager.GetComponent<GameOverController>().SetTextValues(totalMice, totalGoldenMice, totalDoors, score);
     }
 }
