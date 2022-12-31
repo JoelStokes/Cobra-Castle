@@ -3662,10 +3662,10 @@ Transform:
   - {fileID: 1195349133}
   - {fileID: 2020781358}
   - {fileID: 221720016}
-  - {fileID: 715726577}
-  - {fileID: 695973340}
   - {fileID: 837736238}
+  - {fileID: 715726577}
   - {fileID: 2056794144}
+  - {fileID: 695973340}
   - {fileID: 1832486744}
   - {fileID: 1921964298}
   - {fileID: 1276175781}
@@ -7186,8 +7186,8 @@ Transform:
   - {fileID: 1817191016}
   - {fileID: 1858430083}
   - {fileID: 244092894}
-  - {fileID: 462783008}
   - {fileID: 548688994}
+  - {fileID: 462783008}
   - {fileID: 1568127966}
   - {fileID: 1561920163}
   - {fileID: 1641760801}
@@ -9466,6 +9466,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: MouseManager
       objectReference: {fileID: 0}
+    - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
+      propertyPath: topLeft.x
+      value: -6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
+      propertyPath: topLeft.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
+      propertyPath: MousePrefab
+      value: 
+      objectReference: {fileID: 72697064636615854, guid: ec2a5b8ee5fc6164e8971d9f3a1f8ff6, type: 3}
+    - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
+      propertyPath: bottomRight.x
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
+      propertyPath: bottomRight.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
+      propertyPath: GoldenMousePrefab
+      value: 
+      objectReference: {fileID: 3042081742864054736, guid: c147c5aa4519d3546be5e53804f4ce63, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
 --- !u!1001 &1760049047459899066

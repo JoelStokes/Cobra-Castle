@@ -6280,37 +6280,6 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 4841565237973027154, guid: a334d35bf7d5c624d939fcb36865588a, type: 3}
   m_PrefabInstance: {fileID: 750268624}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1467944710 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6041394822686586832, guid: fb90af9040cd2bb438e51f6068fd53cf, type: 3}
-  m_PrefabInstance: {fileID: 8727323666390529009}
-  m_PrefabAsset: {fileID: 0}
---- !u!61 &1467944714
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1467944710}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.08, y: 0.08}
-    newSize: {x: 0.08, y: 0.08}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.08, y: 0.08}
-  m_EdgeRadius: 0
 --- !u!212 &1495471595 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 6583210037827385856, guid: 080f628166c818a409928098e76361b0, type: 3}
@@ -8654,6 +8623,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: MouseManager
       objectReference: {fileID: 0}
+    - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
+      propertyPath: topLeft.x
+      value: -6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
+      propertyPath: topLeft.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
+      propertyPath: MousePrefab
+      value: 
+      objectReference: {fileID: 72697064636615854, guid: ec2a5b8ee5fc6164e8971d9f3a1f8ff6, type: 3}
+    - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
+      propertyPath: bottomRight.x
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
+      propertyPath: bottomRight.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
+      propertyPath: GoldenMousePrefab
+      value: 
+      objectReference: {fileID: 3042081742864054736, guid: c147c5aa4519d3546be5e53804f4ce63, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
 --- !u!1001 &1760049047459899066
@@ -9176,10 +9169,6 @@ PrefabInstance:
     - target: {fileID: 6041394822686586832, guid: fb90af9040cd2bb438e51f6068fd53cf, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 6041394822686586832, guid: fb90af9040cd2bb438e51f6068fd53cf, type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 9146959136002595739, guid: fb90af9040cd2bb438e51f6068fd53cf, type: 3}
       propertyPath: m_RootOrder

@@ -167,7 +167,6 @@ public class GameManager : MonoBehaviour
         } else {
             nextLevel = Random.Range(0, LabyrinthLevels.Count);
         }
-        Debug.Log("Is Labyrinth: " + isLabyrinth + ", Next Level: " + nextLevel);
     }
 
     public void LoadNewLevel(){
@@ -214,5 +213,7 @@ public class GameManager : MonoBehaviour
     private void SetGameOverValues(){
         GameObject GOManager = GameObject.Find("GameOverManager");
         GOManager.GetComponent<GameOverController>().SetTextValues(totalMice, totalGoldenMice, totalDoors, score);
+
+        ResetValues();  //Set back to starting values for next playthrough
     }
 }

@@ -13,6 +13,8 @@ public class CameraScroll : MonoBehaviour
     private float animCurrentPos = 0;
     private bool animating = false;
     private bool startAnim = true;
+    private float startWait = .5f;   //How long to wait at scene load (title centered) before continuing
+    private float startTimer = 0;
 
     private GameManager gameManager;
     private GameObject CameraObj;
@@ -34,29 +36,35 @@ public class CameraScroll : MonoBehaviour
 
     void Update(){  //Camera Scroll for start/end of level
         if (animating){
-            animTimer += Time.deltaTime;
+            if (startTimer >= startWait){
+                animTimer += Time.deltaTime;
 
-            if (animTimer >= animSpeed){
-                animCurrentPos++;
-                CameraObj.transform.position = new Vector3(animCurrentPos, CameraObj.transform.position.y, CameraObj.transform.position.z);
+                if (animTimer >= animSpeed){
+                    animCurrentPos++;
+                    CameraObj.transform.position = new Vector3(animCurrentPos, CameraObj.transform.position.y, CameraObj.transform.position.z);
 
-                if ((animCurrentPos < 0 && startAnim) || (animCurrentPos < animEdgePos && !startAnim)){
-                    animTimer = 0;
-                } else {
-                    animating = false;
-                    if (startAnim){
-                        gameManager.StartPlayer();
+                    if ((animCurrentPos < 0 && startAnim) || (animCurrentPos < animEdgePos && !startAnim)){
+                        animTimer = 0;
                     } else {
-                        gameManager.LoadNewLevel();
+                        animating = false;
+                        if (startAnim){
+                            gameManager.StartPlayer();
+                        } else {
+                            gameManager.LoadNewLevel();
+                        }
                     }
                 }
+            } else {
+                startTimer += Time.deltaTime;
             }
+
         }
     }
 
     public void BeginEndAnim(){
         startAnim = false;
         animating = true;
+        startTimer = startWait;  //Bypass startTimer on ending
     }
 
     public void ChangeEndPos(float newEdgePos){ //Only needed for irregular scene sizes (like Title)

@@ -16,12 +16,15 @@ public class PlayerController : MonoBehaviour
     public Sprite bodyUpLeftImg;
     public Sprite bodyDownRightImg;
     public Sprite bodyDownLeftImg;
+    public Sprite headHurt;
+    public Sprite headDefault;
 
     private int bodyLength = 4;
     private List<GameObject> Body = new List<GameObject>(); //All connected body parts
     private List<SpriteRenderer> BodyRenderers = new List<SpriteRenderer>();    //All body part SpriteRenderers to change sprites based on move directions
     private List<Vector2> previousMoves = new List<Vector2>();  //List of previous moves to apply to body parts
     private MouseManager mouseManager;
+    private SpriteRenderer HeadRenderer;
 
     //Score Variables
     private int miceEaten;
@@ -52,6 +55,8 @@ public class PlayerController : MonoBehaviour
     private GameManager gameManager;
     public bool started = false;
     public bool controllable = true;
+    private bool isDead = false;
+    private Animator HeadAnim;
 
     void Start()
     {
@@ -59,6 +64,9 @@ public class PlayerController : MonoBehaviour
 
         mouseManager = GameObject.Find("MouseManager").GetComponent<MouseManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        HeadRenderer = gameObject.GetComponent<SpriteRenderer>();
+        HeadAnim = gameObject.GetComponent<Animator>();
 
         goldenMouseLimit = moveLimit * 2;
 
@@ -86,34 +94,36 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (controllable){
-            Vector2 newInput = empty;
-            if (Input.GetKeyDown(KeyCode.RightArrow) && transform.rotation.eulerAngles.z != (float)Direction.Left){
-                newInput = new Vector2(1, 0);
-            } else if (Input.GetKeyDown(KeyCode.LeftArrow) && transform.rotation.eulerAngles.z != (float)Direction.Right){
-                newInput = new Vector2(-1,0);
-            } else if (Input.GetKeyDown(KeyCode.UpArrow) && transform.rotation.eulerAngles.z != (float)Direction.Down){
-                newInput = new Vector2(0,1);
-            } else if (Input.GetKeyDown(KeyCode.DownArrow) && transform.rotation.eulerAngles.z != (float)Direction.Up){
-                newInput = new Vector2(0,-1);
-            }
+        if (!isDead){
+            if (controllable){
+                Vector2 newInput = empty;
+                if (Input.GetKeyDown(KeyCode.RightArrow) && transform.rotation.eulerAngles.z != (float)Direction.Left){
+                    newInput = new Vector2(1, 0);
+                } else if (Input.GetKeyDown(KeyCode.LeftArrow) && transform.rotation.eulerAngles.z != (float)Direction.Right){
+                    newInput = new Vector2(-1,0);
+                } else if (Input.GetKeyDown(KeyCode.UpArrow) && transform.rotation.eulerAngles.z != (float)Direction.Down){
+                    newInput = new Vector2(0,1);
+                } else if (Input.GetKeyDown(KeyCode.DownArrow) && transform.rotation.eulerAngles.z != (float)Direction.Up){
+                    newInput = new Vector2(0,-1);
+                }
 
-            if (nextMove == empty && newInput  != empty){ //Help prevent eaten moves in fast-paced game, make extra moves go into input buffer to come out next move cycle
-                nextMove = newInput;
-            } else if (newInput != empty) {
-                moveBuffer = newInput;
-            }
+                if (nextMove == empty && newInput  != empty){ //Help prevent eaten moves in fast-paced game, make extra moves go into input buffer to come out next move cycle
+                    nextMove = newInput;
+                } else if (newInput != empty) {
+                    moveBuffer = newInput;
+                }
 
-            if (Input.GetKey(KeyCode.Space)){
-                sprinting = true;
-            } else {
-                sprinting = false;
+                if (Input.GetKey(KeyCode.Space)){
+                    sprinting = true;
+                } else {
+                    sprinting = false;
+                }
             }
         }
     }
 
     void FixedUpdate() {
-        if (started){
+        if (started && !isDead){
             moveTimer += Time.deltaTime;
             goldenMouseTimer += Time.deltaTime;
 
@@ -130,6 +140,14 @@ public class PlayerController : MonoBehaviour
                 goldenMouseTimer = 0;
                 mouseManager.MoveGoldenMouse();
             }
+        } else if (isDead){
+            AnimatorClipInfo[] m_CurrentClipInfo = HeadAnim.GetCurrentAnimatorClipInfo(0);
+            if (m_CurrentClipInfo[0].clip.name == "HurtPlayerFinished" || m_CurrentClipInfo[0].clip.name == "StaticPlayer"){
+                gameManager.AddDeath(); //If no remaining lives, scene will change before Spawn call hit. Allows death animation to play out before scene change
+                Spawn();
+                isDead = false;
+            }
+
         }
     }
 
@@ -138,6 +156,8 @@ public class PlayerController : MonoBehaviour
         transform.position = new Vector3(SpawnLocation.x, SpawnLocation.y, transform.position.z);
         transform.eulerAngles = new Vector3(0, 0, (float)Direction.Right);
         previousMoves.Insert(0, SpawnLocation);
+
+        HeadRenderer.sprite = headDefault;
 
         for (int i=0; i<bodyLength; i++){
             Body[i].transform.position = new Vector3(SpawnLocation.x + ((i*-1)-1), SpawnLocation.y, transform.position.z);
@@ -320,7 +340,14 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Die(){
-        gameManager.AddDeath(); //If no remaining lives, scene will change before Spawn call hit
-        Spawn();
+        HeadRenderer.sprite = headHurt;
+
+        HeadAnim.Play("HurtPlayer");
+
+        for (int i=0; i<Body.Count; i++){
+            Body[i].GetComponent<Animator>().Play("HurtPlayer");
+        }
+
+        isDead = true;
     }
 }

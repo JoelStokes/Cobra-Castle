@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameOverController : MonoBehaviour
 {
@@ -20,13 +21,16 @@ public class GameOverController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)){
+            SceneManager.LoadScene("Title");
+        }
+
     }
 
     public void SetTextValues(int mice, int goldMice, int doors, int score){
-        MiceCount.SetText(mice.ToString());
-        GoldMiceCount.SetText(goldMice.ToString());
-        DoorCount.SetText(doors.ToString());
-        ScoreCount.SetText(score.ToString());
+        MiceCount.SetText(mice.ToString("D2") + " x15");
+        GoldMiceCount.SetText(goldMice.ToString("D2") + " x25");
+        DoorCount.SetText(doors.ToString("D2") + " x75");
+        ScoreCount.SetText("Total: " + score.ToString());
     }
 }

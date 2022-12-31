@@ -10279,9 +10279,29 @@ PrefabInstance:
       value: MouseManager
       objectReference: {fileID: 0}
     - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
+      propertyPath: topLeft.x
+      value: -6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
+      propertyPath: topLeft.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
+      propertyPath: MousePrefab
+      value: 
+      objectReference: {fileID: 72697064636615854, guid: ec2a5b8ee5fc6164e8971d9f3a1f8ff6, type: 3}
+    - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
+      propertyPath: bottomRight.x
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
       propertyPath: bottomRight.y
       value: -4
       objectReference: {fileID: 0}
+    - target: {fileID: 1534803167578925383, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
+      propertyPath: GoldenMousePrefab
+      value: 
+      objectReference: {fileID: 3042081742864054736, guid: c147c5aa4519d3546be5e53804f4ce63, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52a79ca391098e1458b85c4ee38d25b7, type: 3}
 --- !u!1001 &1760049047459899066

@@ -24,6 +24,12 @@ EditorBuildSettings:
     path: Assets/Scenes/MiceRooms/M-Chapel.unity
     guid: 26c995d6ef1a11f4dafb9766d43ef6e4
   - enabled: 1
+    path: Assets/Scenes/MiceRooms/M-Hourglass.unity
+    guid: 8fb6b3c58e9bbf14199f45dd112c5014
+  - enabled: 1
+    path: Assets/Scenes/MiceRooms/M-Undercroft.unity
+    guid: a8e22fe2544a4f044ace0376429e7815
+  - enabled: 1
     path: Assets/Scenes/LabyrinthRooms/L-Torture Chamber.unity
     guid: 64c999bea67e56347b29e588368e8260
   - enabled: 1
