@@ -75,6 +75,9 @@ public class GameManager : MonoBehaviour
 
             UpdateUI();
         } else if (scene.name == "GameOver"){
+            currentLevelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+            currentLevelManager.SetColor(FGColor[floor], BGColor[floor], FarColor[floor]);
+
             SetGameOverValues();
         }
     }

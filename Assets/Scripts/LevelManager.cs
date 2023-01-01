@@ -28,7 +28,9 @@ public class LevelManager : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         cameraScroll = GameObject.Find("Main Camera").GetComponent<CameraScroll>();
 
-        LevelName.SetText(gameManager.GetLevelName());
+        if (LevelName){
+            LevelName.SetText(gameManager.GetLevelName());
+        }
     }
 
     public void SetColor(Color FGColor, Color BGColor, Color FarColor){
