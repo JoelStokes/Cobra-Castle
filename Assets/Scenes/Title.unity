@@ -21664,6 +21664,11 @@ MonoBehaviour:
   - {fileID: 151297233}
   OptionsButtons: []
   HelpButtons: []
+  startSFX: {fileID: 8300000, guid: 747f63944f3285f46b64f41c358b957f, type: 3}
+  menuMoveSFX: {fileID: 0}
+  menuConfirmSFX: {fileID: 0}
+  menuBackSFX: {fileID: 0}
+  sfxVolume: 0.8
 --- !u!1001 &2113206745
 PrefabInstance:
   m_ObjectHideFlags: 0

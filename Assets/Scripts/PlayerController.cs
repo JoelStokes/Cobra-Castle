@@ -58,6 +58,12 @@ public class PlayerController : MonoBehaviour
     private bool isDead = false;
     private Animator HeadAnim;
 
+    //SFX
+    public AudioClip walkSFX;
+    public AudioClip hurtSFX;
+    public float hurtVolume;
+    public float walkVolume;
+
     void Start()
     {
         layerMask =~ LayerMask.GetMask("Head");  //Prevent Move from detecting self. Needed head box to prevent mouse spawns in face
@@ -220,6 +226,8 @@ public class PlayerController : MonoBehaviour
                     GetTailDirection(previousMoves[i], previousMoves[i+1], previousMoves[i-1], BodyRenderers[i]));
             }
         }
+
+        gameManager.PlaySFX(walkSFX, walkVolume, false);
             
         previousMoves.Insert(0, (new Vector2(transform.position.x, transform.position.y)));
         previousMoves.RemoveAt(previousMoves.Count - 1);
@@ -341,6 +349,8 @@ public class PlayerController : MonoBehaviour
 
     private void Die(){
         HeadRenderer.sprite = headHurt;
+
+        gameManager.PlaySFX(hurtSFX, hurtVolume, false);
 
         HeadAnim.Play("HurtPlayer");
 

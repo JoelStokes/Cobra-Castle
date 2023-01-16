@@ -36,6 +36,15 @@ public class GameManager : MonoBehaviour
     private LevelManager currentLevelManager;
     private PlayerController currentPlayerController;
 
+    //Sound Effects
+    public AudioSource SoundEffectPlayer;
+    public AudioClip[] mouseSFXs;
+    public AudioClip goldMouseSFX;
+    public AudioClip gameOverSFX;
+    public AudioClip doorEnterSFX;
+    public AudioClip menuMoveSFX;
+    public float sfxVolume;
+
     private void Awake() {
         GameObject[] objs = GameObject.FindGameObjectsWithTag("GameManager");
 
@@ -61,6 +70,8 @@ public class GameManager : MonoBehaviour
     {
         doorTouched = false;
         if (scene.name != "Title" && scene.name != "GameOver"){ //No Level Info to load on Title or Game Over
+
+
             currentLevelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
             currentPlayerController = GameObject.Find("Player").GetComponent<PlayerController>();
 
@@ -108,6 +119,10 @@ public class GameManager : MonoBehaviour
         totalMice++;
         miceRemaining--;
         currentLevelManager.UpdateMiceCount(miceRemaining);
+
+        int random = Random.Range(0,mouseSFXs.Length);
+        PlaySFX(mouseSFXs[random], sfxVolume, false);
+
         UpdateScore();
     }
 
@@ -115,6 +130,9 @@ public class GameManager : MonoBehaviour
         totalGoldenMice++;
         miceRemaining--;
         currentLevelManager.UpdateMiceCount(miceRemaining);
+
+        PlaySFX(goldMouseSFX, sfxVolume, false);
+
         UpdateScore();
     }
 
@@ -129,6 +147,8 @@ public class GameManager : MonoBehaviour
 
             currentLevelManager.BeginEndAnim();
             doorTouched = true;
+
+            PlaySFX(doorEnterSFX, sfxVolume, false);
         }
     }
 
@@ -136,7 +156,7 @@ public class GameManager : MonoBehaviour
         //Wait to be called after death animation is played out?
 
         if (lives > 0){
-            lives--;
+            lives--;        
         } else {
             PlayerPrefs.SetInt("Prev Score", score);
 
@@ -146,7 +166,10 @@ public class GameManager : MonoBehaviour
             }
 
             SceneManager.LoadScene("GameOver");
+
+            PlaySFX(gameOverSFX, sfxVolume, true);
         }
+
         
         currentLevelManager.UpdateLives(lives);
     }
@@ -218,5 +241,15 @@ public class GameManager : MonoBehaviour
         GOManager.GetComponent<GameOverController>().SetTextValues(totalMice, totalGoldenMice, totalDoors, score);
 
         ResetValues();  //Set back to starting values for next playthrough
+    }
+
+    public void PlaySFX(AudioClip newSFX, float newVolume, bool onAudioSource){
+        if (onAudioSource){ //Things near scene changes cannot be played through PlayClipAtPoint, will be cut off
+            SoundEffectPlayer.clip = newSFX;
+            SoundEffectPlayer.volume = newVolume - .55f;
+            SoundEffectPlayer.Play();
+        } else {
+            AudioSource.PlayClipAtPoint(newSFX, transform.position, newVolume + .3f);
+        }
     }
 }

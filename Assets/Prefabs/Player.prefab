@@ -113,6 +113,10 @@ MonoBehaviour:
   headDefault: {fileID: 21300000, guid: 2d6d76242821cf945b845a65e9a31929, type: 3}
   started: 0
   controllable: 1
+  walkSFX: {fileID: 8300000, guid: e48cd47bf05391b4f8c7e25e4f4156af, type: 3}
+  hurtSFX: {fileID: 8300000, guid: 43374152867ec544491d66719b238987, type: 3}
+  hurtVolume: 0.8
+  walkVolume: 0.45
 --- !u!61 &1467944714
 BoxCollider2D:
   m_ObjectHideFlags: 0

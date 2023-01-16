@@ -33,6 +33,13 @@ public class TitleController : MonoBehaviour
     private GameManager gameManager;
     private CameraScroll cameraScroll;
 
+    //SFX
+    public AudioClip startSFX;
+    public AudioClip menuMoveSFX;
+    public AudioClip menuConfirmSFX;
+    public AudioClip menuBackSFX;
+    public float sfxVolume;
+
     private bool animating = false;
 
     void Start(){   //Load previous score & highest score
@@ -55,7 +62,8 @@ public class TitleController : MonoBehaviour
 
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
              && !animating){   //Start Scrolling
-             InputSelection();
+             //InputSelection();
+             BeginEndAnim();
         }
     }
 
@@ -157,6 +165,8 @@ public class TitleController : MonoBehaviour
     }
 
     private void BeginEndAnim(){
+        gameManager.PlaySFX(startSFX, sfxVolume, false);
+
         gameManager.SetNextLevel(true);
         levelName.SetText(gameManager.GetLevelName());
         animating = true;
