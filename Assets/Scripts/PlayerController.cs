@@ -103,13 +103,13 @@ public class PlayerController : MonoBehaviour
         if (!isDead){
             if (controllable){
                 Vector2 newInput = empty;
-                if (Input.GetKeyDown(KeyCode.RightArrow) && transform.rotation.eulerAngles.z != (float)Direction.Left){
+                if ((Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) && transform.rotation.eulerAngles.z != (float)Direction.Left){
                     newInput = new Vector2(1, 0);
-                } else if (Input.GetKeyDown(KeyCode.LeftArrow) && transform.rotation.eulerAngles.z != (float)Direction.Right){
+                } else if ((Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) && transform.rotation.eulerAngles.z != (float)Direction.Right){
                     newInput = new Vector2(-1,0);
-                } else if (Input.GetKeyDown(KeyCode.UpArrow) && transform.rotation.eulerAngles.z != (float)Direction.Down){
+                } else if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && transform.rotation.eulerAngles.z != (float)Direction.Down){
                     newInput = new Vector2(0,1);
-                } else if (Input.GetKeyDown(KeyCode.DownArrow) && transform.rotation.eulerAngles.z != (float)Direction.Up){
+                } else if ((Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) && transform.rotation.eulerAngles.z != (float)Direction.Up){
                     newInput = new Vector2(0,-1);
                 }
 
@@ -119,7 +119,7 @@ public class PlayerController : MonoBehaviour
                     moveBuffer = newInput;
                 }
 
-                if (Input.GetKey(KeyCode.Space)){
+                if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.LeftShift)){
                     sprinting = true;
                 } else {
                     sprinting = false;
