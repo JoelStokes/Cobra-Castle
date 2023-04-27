@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     private int doorValue = 75;
 
     private int floor = 0;    //Currently unused, should add higher score counts for higher floors?
-    private float floorSpeed = .05f;
+    private float floorSpeed = .04f;
     public bool isLabyrinth = false;
     private bool doorTouched = false;
     private int nextLevel;
@@ -167,7 +167,7 @@ public class GameManager : MonoBehaviour
 
             SceneManager.LoadScene("GameOver");
 
-            PlaySFX(gameOverSFX, sfxVolume, true);
+            PlaySFX(gameOverSFX, sfxVolume-.1f, true);
         }
 
         

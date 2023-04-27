@@ -191,7 +191,9 @@ public class PlayerController : MonoBehaviour
             IncreaseBody();
             PerformMove(newMove);
             gameManager.AddMouse();
-            mouseManager.SpawnMouse();
+            if (!gameManager.CheckMiceFinished()){
+                mouseManager.SpawnMouse();
+            }
         } else if (hit.transform.tag == "GoldenMouse") {    //Move & Eat special mouse
             Destroy(hit.transform.gameObject);
             IncreaseBody();

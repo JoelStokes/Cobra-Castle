@@ -16,18 +16,20 @@ public class TitleController : MonoBehaviour
     public GameObject MainMenu;
     public GameObject OptionsMenu;
     public GameObject HelpMenu;
+    public GameObject HelpMenu2;
     public GameObject DeleteMenu;
     public GameObject Cursor;
     public Color32 deselectedColor;
     
     //Menu Buttons
     public TextMeshPro[] MainMenuButtons;
-    public TextMeshPro[] OptionsButtons;
+    //public TextMeshPro[] OptionsButtons;
     public TextMeshPro[] HelpButtons;
+    public TextMeshPro[] HelpButtons2;
 
     private string currentMenu = "start"; //start, main, options, help, delete
     private int currentSelection;   //Highlighted number on page
-    private float cursorXAdjust = -.27f;
+    private float cursorXAdjust = -.2f;
     private float cursorYAdjust = 1.1f;
 
     private GameManager gameManager;
@@ -54,16 +56,16 @@ public class TitleController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)){
-            ChangeSelection(1);
-        } else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)){
-            ChangeSelection(-1);
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)){
+            ChangeSelection(1, true);
+        } else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)){
+            ChangeSelection(-1, true);
         }
 
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
              && !animating){   //Start Scrolling
-             //InputSelection();
-             BeginEndAnim();
+             InputSelection();
+             //BeginEndAnim();
         }
     }
 
@@ -72,10 +74,15 @@ public class TitleController : MonoBehaviour
         PressStart.SetActive(false);
         OptionsMenu.SetActive(false);
         HelpMenu.SetActive(false);
+        HelpMenu2.SetActive(false);
         DeleteMenu.SetActive(false);
         Cursor.SetActive(true);
 
         currentMenu = newMenu;
+
+        if (currentMenu != "start"){
+            gameManager.PlaySFX(menuConfirmSFX, sfxVolume, false);
+        }
 
         switch (currentMenu){
             case "start":
@@ -83,39 +90,57 @@ public class TitleController : MonoBehaviour
                 Cursor.SetActive(false);
                 break;
             case "main":
+                if (currentSelection != 0){
+                    ChangeSelection(1, false);
+                }
                 MainMenu.SetActive(true);
                 break;
-            case "options":
+            /*case "options":
                 OptionsMenu.SetActive(true);
-                break;
+                break;*/
             case "help":
+                if (currentSelection != 0){
+                    ChangeSelection(1, false);
+                }
                 HelpMenu.SetActive(true);
+                break;
+            case "help2":
+                HelpMenu2.SetActive(true);
                 break;
             case "delete":
                 DeleteMenu.SetActive(true);
                 break;
         }
 
+        UpdateCursorPosition();
         ChangeOptionColors();
     }
 
-    private void ChangeSelection(int adjustment){
+    private void ChangeSelection(int adjustment, bool playAudio){
+        if (playAudio && currentMenu != "start"){
+            gameManager.PlaySFX(menuMoveSFX, sfxVolume, false);
+        }
+
         currentSelection -= adjustment;
 
-        if (currentMenu == "main" || currentMenu == "options"){
+        if (currentMenu == "main" || currentMenu == "options" || currentMenu == "help" || currentMenu == "help2"){
             if (currentSelection >= MainMenuButtons.Length){
                 currentSelection = 0;
             } else if (currentSelection < 0){
                 currentSelection = MainMenuButtons.Length-1;
             }
-
-            Debug.Log(MainMenuButtons[currentSelection].gameObject.name);
-            Cursor.transform.position = new Vector3(cursorXAdjust, MainMenuButtons[currentSelection].gameObject.transform.position.y + cursorYAdjust, Cursor.transform.position.z);
-        } else if (currentMenu == "help"){
-
         }
-
+            
+        UpdateCursorPosition();
         ChangeOptionColors();
+    }
+
+    private void UpdateCursorPosition(){
+        if (currentMenu == "main"){
+            Cursor.transform.position = new Vector3(cursorXAdjust, MainMenuButtons[currentSelection].gameObject.transform.position.y + cursorYAdjust, Cursor.transform.position.z);
+        } else if (currentMenu != "start") {
+            Cursor.transform.position = new Vector3(HelpButtons[currentSelection].gameObject.transform.position.x - (cursorXAdjust/2), HelpButtons[currentSelection].gameObject.transform.position.y + cursorYAdjust, Cursor.transform.position.z);
+        }
     }
 
     private void ChangeOptionColors(){
@@ -127,17 +152,23 @@ public class TitleController : MonoBehaviour
                 Debug.Log(currentSelection);
                 MainMenuButtons[currentSelection].color = Color.white;
                 break;
-            case "options":
+            /*case "options":
                 for (int i = 0; i < OptionsButtons.Length; i++){
                     OptionsButtons[i].color = deselectedColor;
                 }
                 MainMenuButtons[currentSelection].color = Color.white;
-                break;
+                break;*/
             case "help":
                 for (int i = 0; i < HelpButtons.Length; i++){
                     HelpButtons[i].color = deselectedColor;
                 }
                 HelpButtons[currentSelection].color = Color.white;
+                break;
+            case "help2":
+                for (int i = 0; i < HelpButtons2.Length; i++){
+                    HelpButtons2[i].color = deselectedColor;
+                }
+                HelpButtons2[currentSelection].color = Color.white;
                 break;
         }
     }
@@ -146,7 +177,7 @@ public class TitleController : MonoBehaviour
         if (currentMenu == "start"){
             ChangeMenu("main");
             currentSelection = 0;
-            ChangeSelection(0); //Needed to reset cursor location
+            ChangeSelection(0, false); //Needed to reset cursor location
         } else if (currentMenu == "main"){
             switch (currentSelection){
                 case 0:
@@ -158,6 +189,26 @@ public class TitleController : MonoBehaviour
                     break;
                 case 2:
                     ChangeMenu("options");
+                    currentSelection = 0;
+                    break;
+            }
+        } else if (currentMenu == "help"){
+            switch (currentSelection){
+                case 0:
+                    ChangeMenu("help2");
+                    break;
+                case 1:
+                    ChangeMenu("main");
+                    currentSelection = 0;
+                    break;
+            }
+        } else if (currentMenu == "help2"){
+            switch (currentSelection){
+                case 0:
+                    ChangeMenu("help");
+                    break;
+                case 1:
+                    ChangeMenu("main");
                     currentSelection = 0;
                     break;
             }

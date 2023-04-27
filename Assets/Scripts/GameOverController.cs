@@ -28,7 +28,7 @@ public class GameOverController : MonoBehaviour
     }
 
     public void SetTextValues(int mice, int goldMice, int doors, int score){
-        MiceCount.SetText(mice.ToString("D2") + " x15");
+        MiceCount.SetText(mice.ToString("D2") + " x10");
         GoldMiceCount.SetText(goldMice.ToString("D2") + " x25");
         DoorCount.SetText(doors.ToString("D2") + " x75");
         ScoreCount.SetText("Total: " + score.ToString());
