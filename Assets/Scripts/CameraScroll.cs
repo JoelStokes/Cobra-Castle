@@ -7,7 +7,7 @@ public class CameraScroll : MonoBehaviour
 {
     public bool scrollOnStart = false;
 
-    private float animSpeed = .07f;
+    private float animSpeed = .06f;
     private float animTimer = 0;
     private float animEdgePos = 18;
     private float animCurrentPos = 0;

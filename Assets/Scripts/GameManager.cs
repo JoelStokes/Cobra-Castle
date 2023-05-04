@@ -236,6 +236,10 @@ public class GameManager : MonoBehaviour
         return name;
     }
 
+    public void ShakeCamera(){
+        currentLevelManager.ApplyCameraShake();
+    }
+
     private void SetGameOverValues(){
         GameObject GOManager = GameObject.Find("GameOverManager");
         GOManager.GetComponent<GameOverController>().SetTextValues(totalMice, totalGoldenMice, totalDoors, score);

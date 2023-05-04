@@ -353,6 +353,7 @@ public class PlayerController : MonoBehaviour
         HeadRenderer.sprite = headHurt;
 
         gameManager.PlaySFX(hurtSFX, hurtVolume, false);
+        gameManager.ShakeCamera();
 
         HeadAnim.Play("HurtPlayer");
 

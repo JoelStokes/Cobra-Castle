@@ -23,13 +23,16 @@ public class LevelManager : MonoBehaviour
 
     private GameManager gameManager;
     private CameraScroll cameraScroll;
+    private Animator cameraAnim;
 
     void Start(){    
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        cameraScroll = GameObject.Find("Main Camera").GetComponent<CameraScroll>();
-
+        Camera = GameObject.Find("Main Camera");
+        cameraScroll = Camera.GetComponent<CameraScroll>();
+        
         if (LevelName){
             LevelName.SetText(gameManager.GetLevelName());
+            cameraAnim = Camera.GetComponentInChildren<Animator>();
         }
     }
 
@@ -74,6 +77,10 @@ public class LevelManager : MonoBehaviour
 
     public void UpdateLives(int newLives){
         LivesText.SetText(newLives.ToString("0"));
+    }
+
+    public void ApplyCameraShake(){
+        cameraAnim.SetTrigger("Shake");
     }
 
     private void OpenExitDoor(){

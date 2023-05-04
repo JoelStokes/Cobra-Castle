@@ -149,7 +149,6 @@ public class TitleController : MonoBehaviour
                 for (int i = 0; i < MainMenuButtons.Length; i++){
                     MainMenuButtons[i].color = deselectedColor;
                 }
-                Debug.Log(currentSelection);
                 MainMenuButtons[currentSelection].color = Color.white;
                 break;
             /*case "options":
