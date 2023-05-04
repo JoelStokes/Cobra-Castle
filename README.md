@@ -1,7 +1,7 @@
 # Cobra Castle
 2D Arcade game that gives a twist to the classic title "Snake"
 
-[<img src="https://github.com/JoelStokes/Cobra-Castle/blob/main/github/ScreenshotTitle.png" width="400" />][<img src="https://github.com/JoelStokes/Cobra-Castle/blob/main/github/ScreenshotMiceRoom.png" width="400" />]
+<img src="https://github.com/JoelStokes/Cobra-Castle/blob/main/github/ScreenshotTitle.png" width="400" /><img src="https://github.com/JoelStokes/Cobra-Castle/blob/main/github/ScreenshotMiceRoom.png" width="400" />
 
 ## How to Play
 
